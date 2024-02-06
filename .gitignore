@@ -3,5 +3,8 @@
 *.img
 *.elf
 *.dSYM
+tools/mbrpad
 tools/mkfs
 ejudge.sh
+output.txt
+.idea
