@@ -1,6 +1,2 @@
 editable:
-  - "*.h"
-  - "*.c"
-  - "*.cpp"
-  - "*.S"
-  - "*.s"
+  - "solution.c"
