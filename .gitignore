@@ -4,4 +4,7 @@
 *.elf
 *.dSYM
 tools/mkfs
+tools/mbrpad
 ejudge.sh
+.idea
+output.txt

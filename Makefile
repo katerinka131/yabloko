@@ -19,6 +19,12 @@ run: image.bin
 run-nox: image.bin
 	qemu-system-i386 -nographic -drive format=raw,file=$< -serial mon:stdio
 
+output.txt: image.bin
+	qemu-system-i386 -nographic -drive format=raw,file=$< -serial mon:stdio | sed -n '/Booting from Hard Disk.../,$$p' > output.txt
+
+test: output.txt
+	diff output.txt ref-output.txt
+
 ejudge.sh: image.bin
 	echo >$@ "#!/bin/sh"
 	echo >>$@ "base64 -d <<===EOF | gunzip >image.bin"
@@ -68,7 +74,7 @@ user/%: user/%.o user/crt.o
 image.bin: mbr.bin fs.img
 	cat $^ >$@
 
-kernel.bin: kernel.o console.o drivers/vga.o drivers/uart.o submission.o
+kernel.bin: kernel.o console.o drivers/vga.o drivers/uart.o solution.o
 	$(LD) $(LDFLAGS) -o $@ -Ttext 0x9000 $^
 
 bootmain.o: bootmain.c
@@ -91,7 +97,7 @@ mbr.elf: mbr.o bootmain.o
 	$(LD) -N -m elf_i386 -Ttext=0x7c00 $^ -o $@
 
 clean:
-	rm -f *.elf *.img *.bin *.raw *.o */*.o tools/mkfs ejudge.sh
+	rm -f *.elf *.img *.bin *.raw *.o */*.o tools/mkfs ejudge.sh output.txt
 
 tools/%: tools/%.c
 	gcc -Wall -Werror -g $^ -o $@
