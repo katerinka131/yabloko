@@ -45,6 +45,6 @@ void vga_print_string_noscroll(const char* s) {
             offset++;
         }
         offset %= COLS * ROWS;
-        s++;
+        s++;  // comment
     }
 }
